@@ -3,7 +3,7 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { decode } from "./utils/decode.js";
-import { PORT, routes } from "./utils/config.js";
+import { PORT, privateRoutes, publicRoutes } from "./utils/config.js";
 
 dotenv.config();
 
@@ -11,8 +11,8 @@ const app = express();
 
 app.use(cookieParser());
 
-for (const route in routes) {
-  const target = routes[route];
+for (const route in privateRoutes) {
+  const target = privateRoutes[route];
   app.use(
     route,
     createProxyMiddleware({
@@ -34,6 +34,17 @@ for (const route in routes) {
           }
         },
       },
+    })
+  );
+}
+
+for (const route in publicRoutes) {
+  const target = publicRoutes[route];
+  app.use(
+    route,
+    createProxyMiddleware({
+      target,
+      changeOrigin: true,
     })
   );
 }

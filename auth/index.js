@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { PORT } from "./utils/config.js";
+import authRouter from "./routes/auth.route.js";
 import { connectToMongoDB } from "./db/connectToMongoDB.js";
 
 dotenv.config();
@@ -16,13 +17,7 @@ app.use(
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: "Auth service is running",
-    data: req.headers,
-  });
-});
+app.use("/", authRouter);
 
 app.listen(PORT, () => {
   connectToMongoDB();
