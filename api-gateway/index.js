@@ -3,16 +3,13 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { decode } from "./utils/decode.js";
+import { PORT, routes } from "./utils/config.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(cookieParser());
-
-const routes = {
-  "/api/auth": "http://localhost:8081",
-};
 
 for (const route in routes) {
   const target = routes[route];
@@ -40,8 +37,6 @@ for (const route in routes) {
     })
   );
 }
-
-const PORT = 8080;
 
 app.listen(PORT, () => {
   console.log(`api gateway started listening on port : ${PORT}`);
