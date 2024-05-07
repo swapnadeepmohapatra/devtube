@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { PORT } from "./utils/config.js";
+import { connectToMongoDB } from "./db/connectToMongoDB.js";
 
 dotenv.config();
 const app = express();
@@ -24,5 +25,6 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
+  connectToMongoDB();
   console.log(`Auth service is running on port: ${PORT}`);
 });
