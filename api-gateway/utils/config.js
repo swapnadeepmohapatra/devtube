@@ -9,7 +9,7 @@ export const publicRoutes = {
 };
 
 export const privateRoutes = {
-  "/api/users": "http://localhost:8081",
+  "/api/user": "http://localhost:8081",
 };
 
 export const JWT_SECRET = process.env.JWT_SECRET;

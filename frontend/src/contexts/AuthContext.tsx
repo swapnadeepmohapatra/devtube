@@ -1,6 +1,6 @@
 import { BACKEND_URL } from "@/config/keys";
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface AuthContextProps {
@@ -8,6 +8,7 @@ interface AuthContextProps {
   signin: (email: string, password: string) => void;
   signup: (name: string, email: string, password: string) => void;
   logout: () => void;
+  isAuthenticated: () => boolean | Promise<boolean>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -15,6 +16,7 @@ export const AuthContext = createContext<AuthContextProps>({
   signin: () => {},
   signup: () => {},
   logout: () => {},
+  isAuthenticated: () => false,
 });
 
 export const AuthProvider = ({
@@ -107,8 +109,41 @@ export const AuthProvider = ({
       });
   };
 
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/user`, { withCredentials: true })
+      .then((response) => {
+        console.log(response.data);
+
+        if (response?.data?.status === "success") {
+          setUser(response?.data?.data?.user);
+        }
+      });
+  }, [setUser]);
+
+  const isAuthenticated = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/user`, {
+        withCredentials: true,
+      });
+      if (response?.data?.status === "success") {
+        setUser(response?.data?.data?.user);
+        if (response?.data?.data?.user) {
+          return true;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
+    return false;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, signin, signup, logout }}>
+    <AuthContext.Provider
+      value={{ user, signin, signup, logout, isAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );

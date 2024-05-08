@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import RedirectLink from "@/components/RedirectLink";
 import { AuthContext } from "@/contexts/AuthContext";
@@ -13,7 +13,7 @@ function Signin() {
 
   const { name, email, password } = state;
 
-  const { signup } = useContext(AuthContext);
+  const { signup, isAuthenticated } = useContext(AuthContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -26,6 +26,16 @@ function Signin() {
     e.preventDefault();
     signup(name, email, password);
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAuth = await isAuthenticated();
+      if (isAuth) {
+        window.location.href = "/";
+      }
+    };
+    checkAuth();
+  }, [isAuthenticated]);
 
   return (
     <div className={styles.mainContainer}>

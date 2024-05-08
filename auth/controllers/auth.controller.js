@@ -65,7 +65,9 @@ const login = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ error: "Login failed" });
+    res
+      .status(500)
+      .json({ status: "error", message: "Login failed", data: {} });
   }
 };
 
@@ -78,4 +80,30 @@ const logout = (req, res) => {
   });
 };
 
-export { signup, login, logout };
+const getUser = async (req, res) => {
+  try {
+    if (!req.headers.user) {
+      return res
+        .status(500)
+        .json({ status: "error", message: "Unauthorized", data: {} });
+    }
+
+    const { userId } = JSON.parse(req.headers.user);
+    const user = await User.findById({ _id: userId });
+
+    user.password = undefined;
+
+    res.status(200).json({
+      status: "success",
+      message: "Authorized",
+      data: { user },
+    });
+  } catch (error) {
+    console.log(error.message);
+    res
+      .status(500)
+      .json({ status: "error", message: "Unauthorized", data: {} });
+  }
+};
+
+export { signup, login, logout, getUser };

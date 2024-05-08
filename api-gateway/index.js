@@ -21,12 +21,22 @@ for (const route in privateRoutes) {
       on: {
         proxyReq: (proxyReq, req, res) => {
           try {
-            const decoded = decode(req.headers.cookie);
-            proxyReq.setHeader("user", JSON.stringify(decoded));
-            proxyReq.removeHeader("cookie");
+            if (!req?.headers?.cookie) {
+              res.status(400).json({
+                status: "error",
+                message: "Unauthorized",
+                data: {},
+              });
+
+              res.end();
+            } else {
+              const decoded = decode(req.headers.cookie);
+              proxyReq.setHeader("user", JSON.stringify(decoded));
+              proxyReq.removeHeader("cookie");
+            }
           } catch (err) {
             console.log(err);
-            res.status(401).json({
+            res.status(400).json({
               status: "error",
               message: "Unauthorized",
               data: {},
