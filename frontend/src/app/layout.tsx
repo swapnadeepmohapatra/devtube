@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 // import { DM_Sans, Josefin_Sans } from "next/font/google";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "@/components/Navbar";
+import { Providers } from "./providers";
+import { ToastContainer } from "react-toastify";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 // const josefin_Sans = Josefin_Sans({ subsets: ["latin"] });
@@ -20,8 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={dmSans.className}>
-        <Navbar />
-        {children}
+        <Providers>
+          <ToastContainer />
+          <Navbar />
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );

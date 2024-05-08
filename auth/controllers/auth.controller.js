@@ -69,4 +69,13 @@ const login = async (req, res) => {
   }
 };
 
-export { signup, login };
+const logout = (req, res) => {
+  res.clearCookie("jwt");
+  res.status(200).json({
+    status: "success",
+    message: "User logged out successfully",
+    data: {},
+  });
+};
+
+export { signup, login, logout };
