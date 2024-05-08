@@ -6,6 +6,9 @@
   --background-end-rgb: 0, 0, 0;
 
   --primary-rgb: 3, 196, 184;
+  --primary-rgb-light: 3, 196, 184;
+
+  --blue-rgb: 28, 98, 185;
 }
 
 * {
