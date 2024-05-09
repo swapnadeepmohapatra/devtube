@@ -60,7 +60,7 @@ const s3ToS3 = async (mp4FileName) => {
       },
     ];
 
-    const variantPlaylists = [];
+    const conversionPromises = [];
     for (const { resolution, videoBitrate, audioBitrate } of resolutions) {
       console.log(`HLS conversion starting for ${resolution}`);
       const outputFileName = `${mp4FileName.replace(
@@ -71,7 +71,7 @@ const s3ToS3 = async (mp4FileName) => {
         ".",
         "_"
       )}_${resolution}_%03d.ts`;
-      await new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         ffmpeg("./local.mp4")
           .outputOptions([
             `-c:v h264`,
@@ -89,23 +89,20 @@ const s3ToS3 = async (mp4FileName) => {
           .on("error", (err) => reject(err))
           .run();
       });
-      const variantPlaylist = {
-        resolution,
-        outputFileName,
-      };
-      variantPlaylists.push(variantPlaylist);
-      console.log(`HLS conversion done for ${resolution}`);
+      conversionPromises.push(promise);
     }
+    await Promise.all(conversionPromises);
+
+    console.log(`HLS conversion done for all resolutions`);
+
     console.log(`HLS master m3u8 playlist generating`);
-    let masterPlaylist = variantPlaylists
-      .map((variantPlaylist) => {
-        const { resolution, outputFileName } = variantPlaylist;
-        const bandwidth =
-          resolution === "320x180"
-            ? 676800
-            : resolution === "854x480"
-            ? 1353600
-            : 3230400;
+    let masterPlaylist = resolutions
+      .map(({ resolution }, index) => {
+        const outputFileName = `${mp4FileName.replace(
+          ".",
+          "_"
+        )}_${resolution}.m3u8`;
+        const bandwidth = [676800, 1353600, 3230400][index];
         return `#EXT-X-STREAM-INF:BANDWIDTH=${bandwidth},RESOLUTION=${resolution}\n${outputFileName}`;
       })
       .join("\n");
@@ -117,19 +114,21 @@ const s3ToS3 = async (mp4FileName) => {
     )}_master.m3u8`;
     const masterPlaylistPath = `hls/${masterPlaylistFileName}`;
     fs.writeFileSync(masterPlaylistPath, masterPlaylist);
+
     console.log(`HLS master m3u8 playlist generated`);
 
     console.log(`Deleting locally downloaded s3 mp4 file`);
 
     fs.unlinkSync("local.mp4");
+
     console.log(`Deleted locally downloaded s3 mp4 file`);
 
     console.log(`Uploading media m3u8 playlists and ts segments to s3`);
 
     const files = fs.readdirSync(hlsFolder);
-    for (const file of files) {
+    const uploadPromises = files.map((file) => {
       if (!file.startsWith(mp4FileName.replace(".", "_"))) {
-        continue;
+        return Promise.resolve();
       }
       const filePath = path.join(hlsFolder, file);
       const fileStream = fs.createReadStream(filePath);
@@ -143,9 +142,14 @@ const s3ToS3 = async (mp4FileName) => {
           ? "application/x-mpegURL"
           : null,
       };
-      await s3.upload(uploadParams).promise();
-      fs.unlinkSync(filePath);
-    }
+      return s3
+        .upload(uploadParams)
+        .promise()
+        .then(() => fs.unlinkSync(filePath));
+    });
+
+    await Promise.all(uploadPromises);
+
     console.log(
       `Uploaded media m3u8 playlists and ts segments to s3. Also deleted locally`
     );
