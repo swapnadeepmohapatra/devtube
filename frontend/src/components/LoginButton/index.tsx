@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./index.module.css";
-import { MdAccountCircle } from "react-icons/md";
+import { MdOutlineAccountCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
 function LoginButton() {
@@ -12,7 +12,7 @@ function LoginButton() {
       className={styles.loginButton}
       onClick={() => router.replace("/auth/signin")}
     >
-      <MdAccountCircle className={styles.accountIcon} />
+      <MdOutlineAccountCircle className={styles.accountIcon} />
       <p>Sign in</p>
     </button>
   );

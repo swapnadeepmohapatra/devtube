@@ -3,8 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import RedirectLink from "@/components/RedirectLink";
 import { AuthContext } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 function Signin() {
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -30,11 +33,20 @@ function Signin() {
     const checkAuth = async () => {
       const isAuth = await isAuthenticated();
       if (isAuth) {
-        window.location.href = "/";
+        router.replace("/");
       }
+      setLoading(false);
     };
     checkAuth();
-  }, [isAuthenticated]);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.mainContainer}>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.mainContainer}>

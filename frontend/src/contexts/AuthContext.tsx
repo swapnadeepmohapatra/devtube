@@ -1,5 +1,6 @@
 import { BACKEND_URL } from "@/config/keys";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -25,6 +26,7 @@ export const AuthProvider = ({
   children: React.ReactNode;
 }>) => {
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   const signup = (name: string, email: string, password: string) => {
     axios
@@ -41,6 +43,7 @@ export const AuthProvider = ({
         if (response?.data?.status === "success") {
           toast.success(response?.data?.message);
           setUser(response?.data?.data);
+          router.replace("/");
         } else if (response?.data?.status === "error") {
           toast.error(response?.data?.message);
         } else {
@@ -72,6 +75,7 @@ export const AuthProvider = ({
         if (response?.data?.status === "success") {
           toast.success(response?.data?.message);
           setUser(response?.data?.data);
+          router.replace("/");
         } else if (response?.data?.status === "error") {
           toast.error(response?.data?.message);
         } else {

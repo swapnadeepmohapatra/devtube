@@ -1,0 +1,102 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.inputContainer label {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.inputContainer input {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(var(--foreground-rgb), 0.2);
+  background: rgba(var(--foreground-rgb), 0.05);
+  color: rgb(var(--foreground-rgb));
+  min-width: 30vw;
+}
+
+.inputContainer input:focus {
+  outline: none;
+  border: 1px solid rgb(var(--blue-rgb));
+  background: rgba(var(--foreground-rgb), 0.1);
+}
+
+.submitButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: rgb(var(--primary-rgb));
+  color: rgb(var(--foreground-rgb));
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: center;
+  color: black;
+}
+.submitButton:hover {
+  background: rgba(var(--primary-rgb), 0.9);
+}
+.submitButton:focus {
+  background: rgba(var(--primary-rgb), 0.8);
+}
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(var(--foreground-rgb), 0.1);
+  border-radius: 1rem;
+  border: 1px solid rgba(var(--foreground-rgb), 0.1);
+  padding: 3rem 4rem;
+  margin: 2rem 0;
+  cursor: pointer;
+}
+.uploadContainer h4 {
+  margin-top: 1rem;
+}
+.publishIcon {
+  height: 6rem;
+  width: 6rem;
+  color: #c1c1c1;
+  background: rgba(var(--foreground-rgb), 0.1);
+  padding: 1rem;
+  border-radius: 50%;
+}
+.progressContainer {
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.progressParent {
+  width: 100%;
+  height: 1rem;
+  background: rgba(var(--foreground-rgb), 0.2);
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  display: flex;
+}
+.progressBar {
+  width: 100%;
+  height: 1rem;
+  background: rgba(var(--primary-rgb), 1);
+  border-radius: 0.5rem;
+}
