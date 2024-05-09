@@ -1,4 +1,5 @@
 "use client";
+import VideoPlayer from "@/components/VideoPlayer";
 import React from "react";
 
 function Home() {
@@ -11,7 +12,12 @@ function Home() {
   //   };
   //   checkAuth();
   // }, [isAuthenticated]);
-  return <div>Home</div>;
+  return (
+    <div>
+      <h1>Video</h1>
+      <VideoPlayer />
+    </div>
+  );
 }
 
 export default Home;
