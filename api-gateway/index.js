@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -11,6 +12,14 @@ const app = express();
 
 app.use(cookieParser());
 
+app.use(
+  cors({
+    credentials: true,
+    allowedHeaders: ["Content-Type"],
+    origin: "http://localhost:3000",
+  })
+);
+
 for (const route in privateRoutes) {
   const target = privateRoutes[route];
   app.use(
@@ -22,7 +31,7 @@ for (const route in privateRoutes) {
         proxyReq: (proxyReq, req, res) => {
           try {
             if (!req?.headers?.cookie) {
-              res.status(400).json({
+              res.status(401).json({
                 status: "error",
                 message: "Unauthorized",
                 data: {},
@@ -36,7 +45,7 @@ for (const route in privateRoutes) {
             }
           } catch (err) {
             console.log(err);
-            res.status(400).json({
+            res.status(401).json({
               status: "error",
               message: "Unauthorized",
               data: {},

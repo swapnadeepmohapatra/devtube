@@ -10,6 +10,7 @@ export const publicRoutes = {
 
 export const privateRoutes = {
   "/api/user": "http://localhost:8081",
+  "/api/upload": "http://localhost:8082",
 };
 
 export const JWT_SECRET = process.env.JWT_SECRET;
