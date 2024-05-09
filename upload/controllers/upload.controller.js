@@ -4,6 +4,8 @@ import {
   AWS_BUCKET,
   AWS_SECRET_ACCESS_KEY,
 } from "../utils/config.js";
+import Video from "../models/video.model.js";
+import { sendMessageToKafka } from "../kafka/sendMessageToKafka.js";
 
 export const initializeUpload = async (req, res) => {
   try {
@@ -29,10 +31,18 @@ export const initializeUpload = async (req, res) => {
     console.log("multipartparams---- ", multipartParams);
     const uploadId = multipartParams.UploadId;
 
-    res.status(200).json({ uploadId });
+    res.status(200).json({
+      status: "success",
+      message: "Upload initialized successfully!!!",
+      data: { uploadId },
+    });
   } catch (err) {
     console.error("Error initializing upload:", err);
-    res.status(500).send("Upload initialization failed");
+    res.status(500).json({
+      status: "error",
+      message: "Upload could not be initialized!! " + err.message,
+      data: {},
+    });
   }
 };
 
@@ -57,18 +67,27 @@ export const uploadChunk = async (req, res) => {
 
     const data = await s3.uploadPart(partParams).promise();
     console.log("data------- ", data);
-    res.status(200).json({ success: true });
+    res.status(200).json({
+      status: "success",
+      message: "Chunk uploaded successfully!!!",
+      data: {},
+    });
   } catch (err) {
     console.error("Error uploading chunk:", err);
-    res.status(500).send("Chunk could not be uploaded");
+    res.status(500).json({
+      status: "error",
+      message: "Chunk could not be uploaded!! " + err.message,
+      data: {},
+    });
   }
 };
 
 export const completeUpload = async (req, res) => {
   try {
     console.log("Completing Upload");
-    const { filename, totalChunks, uploadId, title, description, author } =
-      req.body;
+    const user = JSON.parse(req?.headers?.user);
+
+    const { filename, totalChunks, uploadId, title, description } = req.body;
 
     const s3 = new AWS.S3({
       accessKeyId: AWS_ACCESS_KEY_ID,
@@ -110,10 +129,47 @@ export const completeUpload = async (req, res) => {
     const url = uploadResult.Location;
     console.log("Video uploaded at ", url);
 
-    // await addVideoDetailsToDB(title, description, author, url);
-    return res.status(200).json({ message: "Uploaded successfully!!!" });
+    await addVideoDetailsToDB(
+      title,
+      description,
+      user.userId,
+      filename,
+      totalChunks,
+      uploadId
+    );
+
+    await sendMessageToKafka(completeParams);
+
+    return res.status(200).json({
+      status: "success",
+      message: "Uploaded successfully!!!",
+      data: {},
+    });
   } catch (error) {
     console.log("Error completing upload :", error);
-    return res.status(500).send("Upload completion failed");
+    return res.status(500).json({
+      status: "error",
+      message: error.message,
+      data: {},
+    });
   }
+};
+
+const addVideoDetailsToDB = async (
+  title,
+  description,
+  author,
+  filename,
+  totalChunks,
+  uploadId
+) => {
+  const newVideo = new Video({
+    title,
+    description,
+    author,
+    filename,
+    totalChunks,
+    uploadId,
+  });
+  await newVideo.save();
 };

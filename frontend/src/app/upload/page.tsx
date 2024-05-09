@@ -67,7 +67,7 @@ function Upload() {
           withCredentials: true,
         }
       );
-      const { uploadId } = initializeRes.data;
+      const { uploadId } = initializeRes.data.data;
       console.log("Upload id is ", uploadId);
 
       const chunkSize = 5 * 1024 * 1024; // 5 MB chunks
