@@ -28,7 +28,7 @@ body {
   font-family: "DM Sans", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-
+  /* background: #17171e; */
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,

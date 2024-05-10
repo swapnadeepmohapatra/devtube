@@ -15,7 +15,10 @@ app.use(express.json());
 
 kafkaconfig.consume("transcode", (value) => {
   console.log("got data from kafka : ", value);
-  s3ToS3(JSON.parse(value).Key);
+  s3ToS3({
+    mp4FileName: JSON.parse(value).Key,
+    uploadId: JSON.parse(value).UploadId,
+  });
 });
 
 // app.get("/", async (req, res) => {

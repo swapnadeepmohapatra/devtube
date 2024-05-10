@@ -1,21 +1,23 @@
 "use client";
+import VideoElement from "@/components/VideoElement";
 import VideoPlayer from "@/components/VideoPlayer";
-import React from "react";
+import { VideoContext } from "@/contexts/VideoContext";
+import React, { useContext } from "react";
+import styles from "./index.module.css";
 
 function Home() {
-  //   useEffect(() => {
-  //   const checkAuth = async () => {
-  //     const isAuth = await isAuthenticated();
-  //     if (isAuth) {
-  //       window.location.href = "/";
-  //     }
-  //   };
-  //   checkAuth();
-  // }, [isAuthenticated]);
+  const { videos } = useContext(VideoContext);
+
   return (
     <div>
       <h1>Video</h1>
-      <VideoPlayer />
+      <div className={styles.videoGrid}>
+        {videos.map((video) => (
+          <VideoElement key={video._id} video={video} />
+        ))}
+      </div>
+
+      {/* <VideoPlayer /> */}
     </div>
   );
 }

@@ -10,6 +10,7 @@ import {
 } from "../utils/config.js";
 import ffprobe from "ffprobe";
 import ffprobeStatic from "ffprobe-static";
+import { updateVideoStatus } from "../db/updateVideoStatus.js";
 
 ffmpeg.setFfmpegPath(ffmpegStatic);
 
@@ -21,10 +22,14 @@ const s3 = new AWS.S3({
 const bucketName = AWS_BUCKET;
 const hlsFolder = "hls";
 
-const s3ToS3 = async (mp4FileName) => {
+const s3ToS3 = async ({ mp4FileName, uploadId }) => {
   console.log("Starting script");
   console.time("req_time");
   try {
+    console.log("Updating video status to PROCESSING");
+    await updateVideoStatus(uploadId, "PROCESSING");
+    console.log("Updated video status to PROCESSING");
+
     console.log("Downloading s3 mp4 file locally");
 
     console.log("mp4FileName: ", mp4FileName);
@@ -231,6 +236,10 @@ const s3ToS3 = async (mp4FileName) => {
     fs.unlinkSync("local.mp4");
 
     console.log(`Deleted locally downloaded s3 mp4 file`);
+
+    console.log(`Updating video status to PROCESSED`);
+    await updateVideoStatus(uploadId, "PROCESSED");
+    console.log(`Updated video status to PROCESSED`);
 
     console.log("Success. Time taken: ");
     console.timeEnd("req_time");
