@@ -19,7 +19,7 @@ kafkaconfig.consume("transcode", (value) => {
 });
 
 // app.get("/", async (req, res) => {
-//   await s3ToS3("BJPsREALPower.mp4");
+//   await s3ToS3("hls/BJPsREALPower.mp4");
 //   res.send("Done");
 // });
 
