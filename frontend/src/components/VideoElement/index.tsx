@@ -2,6 +2,7 @@ import React from "react";
 import { Video } from "@/contexts/VideoContext";
 import styles from "./index.module.css";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export interface VideoElementProps {
   video: Video;
@@ -9,6 +10,7 @@ export interface VideoElementProps {
 
 function VideoElement({
   video: {
+    _id,
     title,
     description,
     author,
@@ -20,8 +22,13 @@ function VideoElement({
     thumbnails,
   },
 }: Readonly<VideoElementProps>) {
+  const router = useRouter();
+
   return (
-    <div className={styles.videoContainer}>
+    <div
+      className={styles.videoContainer}
+      onClick={() => router.replace(`/watch/${_id}`)}
+    >
       <div className={styles.videoThumbnail}>
         <Image
           src={thumbnails[1]}

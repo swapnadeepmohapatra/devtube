@@ -17,10 +17,18 @@ export interface Video {
 
 export interface VideoContextType {
   videos: Video[];
+  getVideo: (id: string) => Video | {};
+  getRelatedVideos: (id: string) => Video[];
 }
 
 export const VideoContext = createContext<VideoContextType>({
   videos: [],
+  getVideo: (id: string) => {
+    return {};
+  },
+  getRelatedVideos: (id: string) => {
+    return [];
+  },
 });
 
 export const VideoProvider = ({
@@ -41,12 +49,20 @@ export const VideoProvider = ({
     }
   };
 
+  const getVideo = (id: string) => {
+    return videos.find((video) => video._id === id) || {};
+  };
+
+  const getRelatedVideos = (id: string) => {
+    return videos.filter((video) => video._id !== id);
+  };
+
   useEffect(() => {
     getVideos();
   }, []);
 
   return (
-    <VideoContext.Provider value={{ videos: videos }}>
+    <VideoContext.Provider value={{ videos, getVideo, getRelatedVideos }}>
       {children}
     </VideoContext.Provider>
   );

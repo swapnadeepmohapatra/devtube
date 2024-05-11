@@ -9,15 +9,10 @@ function Home() {
   const { videos } = useContext(VideoContext);
 
   return (
-    <div>
-      <h1>Video</h1>
-      <div className={styles.videoGrid}>
-        {videos.map((video) => (
-          <VideoElement key={video._id} video={video} />
-        ))}
-      </div>
-
-      {/* <VideoPlayer /> */}
+    <div className={styles.videoGrid}>
+      {videos.map((video) => (
+        <VideoElement key={video._id} video={video} />
+      ))}
     </div>
   );
 }
