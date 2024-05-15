@@ -1,13 +1,14 @@
 "use client";
 import React, { useContext } from "react";
 import styles from "./index.module.css";
-import { MdMenu } from "react-icons/md";
+import { MdMenu, MdLogout, MdPublish } from "react-icons/md";
 import DevTubeLogo from "@/icons/logo.svg";
 import Image from "next/image";
 import LoginButton from "@/components/LoginButton";
 import SearchBar from "@/components/SearchBar";
 import { AuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import NavbarUserSection from "../NavbarUserSection";
 
 function Navbar() {
   const { user } = useContext(AuthContext);
@@ -30,7 +31,7 @@ function Navbar() {
         <SearchBar />
       </div>
       <div className={styles.navbarSection}>
-        {user ? <p>{user.name}</p> : <LoginButton />}
+        {user ? <NavbarUserSection user={user} /> : <LoginButton />}
       </div>
     </nav>
   );

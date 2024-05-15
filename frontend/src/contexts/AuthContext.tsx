@@ -98,6 +98,7 @@ export const AuthProvider = ({
         if (response?.data?.status === "success") {
           toast.success(response?.data?.message);
           setUser(null);
+          router.replace("/");
         } else if (response?.data?.status === "error") {
           toast.error(response?.data?.message);
         } else {

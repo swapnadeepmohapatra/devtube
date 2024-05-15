@@ -8,8 +8,6 @@ This is video streaming platform. Here the users can watch videos, like or disli
 
 ![InfraDiagramDevTube](https://github.com/swapnadeepmohapatra/devtube/assets/41564532/10877150-9d03-4929-8303-5b3460ae8d90)
 
-
-
 ## Demo Video
 
 ## Tech Stack

@@ -129,6 +129,11 @@ function Upload() {
       // setSelectedFile(null);
 
       console.log(completeRes.data);
+
+      const id = completeRes.data.data.uploadedVideo._id;
+
+      // router.replace(`/upload/${id}`);
+      router.replace(`/`);
     } catch (error) {
       toast.error("Error uploading file");
     }

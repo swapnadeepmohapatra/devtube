@@ -129,7 +129,7 @@ export const completeUpload = async (req, res) => {
     const url = uploadResult.Location;
     console.log("Video uploaded at ", url);
 
-    await addVideoDetailsToDB(
+    const uploadedVideo = await addVideoDetailsToDB(
       title,
       description,
       user.userId,
@@ -138,12 +138,16 @@ export const completeUpload = async (req, res) => {
       uploadId
     );
 
+    console.log(uploadedVideo);
+
     await sendMessageToKafka(completeParams);
 
     return res.status(200).json({
       status: "success",
       message: "Uploaded successfully!!!",
-      data: {},
+      data: {
+        uploadedVideo,
+      },
     });
   } catch (error) {
     console.log("Error completing upload :", error);
@@ -171,5 +175,6 @@ const addVideoDetailsToDB = async (
     totalChunks,
     uploadId,
   });
-  await newVideo.save();
+  const result = await newVideo.save();
+  return result;
 };
