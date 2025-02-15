@@ -10,6 +10,10 @@ This is video streaming platform. Here the users can watch videos, like or disli
 
 ## Demo Video
 
+YouTubeLink: https://www.youtube.com/watch?v=PDfwkM2B_XI
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/PDfwkM2B_XI/0.jpg)](https://www.youtube.com/watch?v=PDfwkM2B_XI)
+
 ## Tech Stack
 
 - Next.js
@@ -37,4 +41,7 @@ This is video streaming platform. Here the users can watch videos, like or disli
 
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/9afa98db-a77b-4b32-83e1-ee52292c69dc" />
 
-<img width="1728" alt="image" src="https://github.com/user-attachments/assets/64b28fba-7f7e-4b47-ad97-c1b77391498c" />
+<img width="1273" alt="image" src="https://github.com/user-attachments/assets/9ea9fc24-e778-40b5-8bf8-8619d663d7da" />
+
+
+## Thank You
