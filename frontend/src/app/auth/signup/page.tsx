@@ -39,7 +39,7 @@ function Signin() {
       setLoading(false);
     };
     checkAuth();
-  }, []);
+  }, [isAuthenticated, router]);
 
   if (loading) {
     return (

@@ -1,7 +1,7 @@
 "use client";
 import React, { useContext } from "react";
 import styles from "./index.module.css";
-import { MdMenu, MdLogout, MdPublish } from "react-icons/md";
+import { MdMenu } from "react-icons/md";
 import DevTubeLogo from "@/icons/logo.svg";
 import Image from "next/image";
 import LoginButton from "@/components/LoginButton";

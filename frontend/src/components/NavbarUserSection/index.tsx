@@ -5,7 +5,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
 interface NavbarUserSectionProps {
-  user: any;
+  user: { name: string };
 }
 
 function NavbarUserSection({ user }: NavbarUserSectionProps) {

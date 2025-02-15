@@ -17,16 +17,20 @@ export interface Video {
 
 export interface VideoContextType {
   videos: Video[];
-  getVideo: (id: string) => Video | {};
+  getVideo: (id: string) => Video | object;
   getRelatedVideos: (id: string) => Video[];
 }
 
 export const VideoContext = createContext<VideoContextType>({
   videos: [],
   getVideo: (id: string) => {
+    console.log(id);
+
     return {};
   },
   getRelatedVideos: (id: string) => {
+    console.log(id);
+
     return [];
   },
 });

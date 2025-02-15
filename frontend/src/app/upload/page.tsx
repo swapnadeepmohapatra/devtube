@@ -31,7 +31,7 @@ function Upload() {
       }
     };
     checkAuth();
-  }, []);
+  }, [isAuthenticated, router]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -96,7 +96,7 @@ function Upload() {
           })
           .then(() => {
             setProgress((prev) => {
-              let total = prev + Math.ceil(100 / totalChunks);
+              const total = prev + Math.ceil(100 / totalChunks);
               return total > 100 ? 100 : total;
             });
           });
@@ -132,9 +132,13 @@ function Upload() {
 
       const id = completeRes.data.data.uploadedVideo._id;
 
+      console.log(id);
+
       // router.replace(`/upload/${id}`);
       router.replace(`/`);
     } catch (error) {
+      console.log(error);
+
       toast.error("Error uploading file");
     }
   };

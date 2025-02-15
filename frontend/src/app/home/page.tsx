@@ -1,6 +1,6 @@
 "use client";
 import VideoElement from "@/components/VideoElement";
-import VideoPlayer from "@/components/VideoPlayer";
+// import VideoPlayer from "@/components/VideoPlayer";
 import { VideoContext } from "@/contexts/VideoContext";
 import React, { useContext } from "react";
 import styles from "./index.module.css";

@@ -7,7 +7,7 @@ import styles from "./index.module.css";
 import VideoElement from "@/components/VideoElement";
 
 function WatchPage() {
-  const [video, setVideo] = useState<Video | {}>({});
+  const [video, setVideo] = useState<Video | object>({});
   const [relatedVideos, setRelatedVideos] = useState<Video[]>([]);
   const { getVideo, getRelatedVideos } = useContext(VideoContext);
   const { slug } = useParams();
