@@ -21,6 +21,12 @@ This is video streaming platform. Here the users can watch videos, like or disli
 - AWS S3
 - ffmpeg
 
+## Deployed Link
+
+- [Frontend](https://devtube.swapnadeep.com/)
+
+> devtube.swapnadeep.com
+
 ## Screenshots
 
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/a43fd0f2-5ff1-48fc-862e-3b2b99ccdcce" />
