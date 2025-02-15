@@ -7,13 +7,18 @@ import styles from "./index.module.css";
 import VideoElement from "@/components/VideoElement";
 
 function WatchPage() {
-  const [video, setVideo] = useState<Video | object>({});
+  const [video, setVideo] = useState<Video | null>(null);
   const [relatedVideos, setRelatedVideos] = useState<Video[]>([]);
   const { getVideo, getRelatedVideos } = useContext(VideoContext);
   const { slug } = useParams();
 
   useEffect(() => {
-    setVideo(getVideo(slug.toString()));
+    const videoData = getVideo(slug.toString());
+    if (videoData && typeof videoData === "object" && "url" in videoData) {
+      setVideo(videoData as Video);
+    } else {
+      setVideo(null);
+    }
     setRelatedVideos(getRelatedVideos(slug.toString()));
   }, [slug, getVideo, setVideo, getRelatedVideos]);
 
@@ -21,7 +26,7 @@ function WatchPage() {
     return <div>Loading...</div>;
   }
 
-  if (!video.url) {
+  if (!video?.url) {
     return <div>Loading...</div>;
   }
 
